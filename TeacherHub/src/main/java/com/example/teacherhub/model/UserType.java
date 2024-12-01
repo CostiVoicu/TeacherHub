@@ -1,4 +1,4 @@
-package com.example.teacherhub.entities;
+package com.example.teacherhub.model;
 
 public class UserType {
     private int typeID;

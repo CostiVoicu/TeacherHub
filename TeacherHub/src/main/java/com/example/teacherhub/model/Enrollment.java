@@ -1,4 +1,4 @@
-package com.example.teacherhub.entities;
+package com.example.teacherhub.model;
 
 public class Enrollment {
     private int studentID;
