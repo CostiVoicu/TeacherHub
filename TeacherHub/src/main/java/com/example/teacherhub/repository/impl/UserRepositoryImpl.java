@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
                 teacher.setUserID(resultSet.getInt("UserID"));
                 teacher.setFirstName(resultSet.getString("FirstName"));
                 teacher.setLastName(resultSet.getString("LastName"));
-                teacher.setUserTypeID(resultSet.getInt("UserTypeID"));
+                teacher.setUserType("Teacher");
                 teacher.setEmail(resultSet.getString("Email"));
                 teacher.setPassword(resultSet.getString("Password"));
                 teachers.add(teacher);
@@ -49,7 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
                 student.setUserID(resultSet.getInt("UserID"));
                 student.setFirstName(resultSet.getString("FirstName"));
                 student.setLastName(resultSet.getString("LastName"));
-                student.setUserTypeID(resultSet.getInt("UserTypeID"));
+                student.setUserType("Student");
                 student.setEmail(resultSet.getString("Email"));
                 student.setPassword(resultSet.getString("Password"));
                 students.add(student);

@@ -4,7 +4,7 @@ public class User {
     private int userID;
     private String firstName;
     private String lastName;
-    private int userTypeID;
+    private String userType;
     private String email;
     private String password;
 
@@ -48,12 +48,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public int getUserTypeID() {
-        return userTypeID;
+    public String getUserType() {
+        return userType;
     }
 
-    public void setUserTypeID(int userTypeID) {
-        this.userTypeID = userTypeID;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }
 

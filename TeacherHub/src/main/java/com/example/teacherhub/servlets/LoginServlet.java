@@ -24,15 +24,16 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
+
 
         List<User> teachers = userService.getAllTeachers();
         List<User> students = userService.getAllStudents();
 
         // Check if the user is a teacher
         for (User teacher : teachers) {
-            if (teacher.getEmail().equals(username) && teacher.getPassword().equals(password)) {
+            if (teacher.getEmail().equals(email) && teacher.getPassword().equals(password)) {
                 request.getSession().setAttribute("user", teacher);
                 response.sendRedirect("teacherPage.jsp"); // Redirect to teacher page
                 return;
@@ -41,9 +42,9 @@ public class LoginServlet extends HttpServlet {
 
         // Check if the user is a student
         for (User student : students) {
-            if (student.getEmail().equals(username) && student.getPassword().equals(password)) {
+            if (student.getEmail().equals(email) && student.getPassword().equals(password)) {
                 request.getSession().setAttribute("user", student); // Store user in session
-                response.sendRedirect("studentPage.jsp"); // Redirect to student page
+                response.sendRedirect("StudentServlet");
                 return;
             }
         }
