@@ -7,7 +7,15 @@ public class Grade {
     private int studentID;
     private int subjectID;
     private double grade;
+    private String studentName;
     private Date dateAssigned;
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
 
     public int getGradeID() {
         return gradeID;
