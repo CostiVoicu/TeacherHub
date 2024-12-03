@@ -4,7 +4,7 @@ import com.example.teacherhub.model.Grade;
 import com.example.teacherhub.repository.GradeRepository;
 import com.example.teacherhub.service.GradeService;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class GradeServiceImpl implements GradeService {
@@ -25,5 +25,14 @@ public class GradeServiceImpl implements GradeService {
         }
 
         return gradeRepository.addGradeForStudent(studentId, subjectId, grade);
+    }
+
+    @Override
+    public boolean updateGradeForStudent(int gradeId, double grade, Date dateAssigned) {
+        if (grade < 0 || grade > 10) {
+            throw new IllegalArgumentException("Grade must be between 0 and 100.");
+        }
+
+        return gradeRepository.updateGradeForStudent(gradeId, grade, dateAssigned);
     }
 }

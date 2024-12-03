@@ -52,6 +52,7 @@
 
 <h3>Add Grade for Students in <%= selectedSubject.getSubjectName() %></h3>
 <form action="TeacherServlet" method="post">
+    <input type="hidden" name="action" value="addGrade">
     <input type="hidden" name="subjectId" value="<%= selectedSubject.getSubjectID() %>">
     <label for="student">Select Student:</label>
     <select name="studentId" id="student">
@@ -104,7 +105,32 @@
     <%
         for (Grade grade : grades) {
     %>
-    <li><%= grade.getStudentName() %> | <%= grade.getGrade() %> | <%= grade.getDateAssigned() %></li>
+    <li>
+        <strong>Student:</strong> <%= grade.getStudentName() %> |
+        <strong>Grade:</strong> <%= grade.getGrade() %> |
+        <strong>Date:</strong> <%= grade.getDateAssigned() %>
+
+        <% if (selectedSubject != null && selectedSubject.getTeacherID() == ((User) session.getAttribute("user")).getUserID()) { %>
+
+        <!-- Button to toggle update form -->
+        <button type="button" onclick="toggleUpdateForm('<%= grade.getGradeID() %>')">Update</button>
+
+        <!-- Hidden update form -->
+        <form id="updateForm-<%= grade.getGradeID() %>" action="TeacherServlet" method="post" style="display:none; margin-top: 10px;">
+            <input type="hidden" name="action" value="updateGrade">
+            <input type="hidden" name="gradeId" value="<%= grade.getGradeID() %>">
+            <input type="hidden" name="subjectId" value="<%= selectedSubject.getSubjectID() %>">
+            <label for="updatedGrade-<%= grade.getGradeID() %>">New Grade:</label>
+            <input type="number" name="updatedGrade" id="updatedGrade-<%= grade.getGradeID() %>" step="0.01" min="0" max="100" value="<%= grade.getGrade()%>" required>
+            <br>
+            <label for="updatedDate-<%= grade.getGradeID() %>">Date:</label>
+            <input type="date" name="updatedDate" id="updatedDate-<%= grade.getGradeID() %>" value="<%= grade.getDateAssigned()%>" required>
+            <br>
+            <button type="submit">Ok</button>
+        </form>
+
+        <% } %>
+    </li>
     <%
         }
     %>
@@ -114,6 +140,25 @@
         }
     }
 %>
+
+<script>
+    // JavaScript function to toggle the visibility of the update form
+    function toggleUpdateForm(gradeId) {
+        console.log("Attempting to toggle form for Grade ID:", gradeId);
+        const formId = "updateForm-" + gradeId; // Concatenates 'updateForm-' with the gradeId
+        console.log("Looking for form with ID:", formId);
+
+        const form = document.getElementById(formId);
+        if (form) {
+            // Toggles the visibility of the form
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        } else {
+            console.error("Form not found for Grade ID:", gradeId);
+        }
+    }
+
+
+</script>
 
 </body>
 </html>

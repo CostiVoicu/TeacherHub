@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 @WebServlet("/TeacherServlet")
@@ -72,24 +73,55 @@ public class TeacherServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String subjectIdParam = request.getParameter("subjectId");
-        String studentIdParam = request.getParameter("studentId");
-        String gradeParam = request.getParameter("grade");
+        String action = request.getParameter("action");
 
-        if (subjectIdParam != null && studentIdParam != null && gradeParam != null) {
-            int subjectId = Integer.parseInt(subjectIdParam);
-            int studentId = Integer.parseInt(studentIdParam);
-            double grade = Double.parseDouble(gradeParam);
+        if ("addGrade".equals(action)) {
+            // Logic for adding a grade
+            String subjectIdParam = request.getParameter("subjectId");
+            String studentIdParam = request.getParameter("studentId");
+            String gradeParam = request.getParameter("grade");
 
-            boolean success = gradeService.addGradeForStudent(studentId, subjectId, grade);
+            if (subjectIdParam != null && studentIdParam != null && gradeParam != null) {
+                int subjectId = Integer.parseInt(subjectIdParam);
+                int studentId = Integer.parseInt(studentIdParam);
+                double grade = Double.parseDouble(gradeParam);
 
-            if (success) {
-                response.sendRedirect("TeacherServlet?subjectId=" + subjectId + "&success=true");
+                boolean success = gradeService.addGradeForStudent(studentId, subjectId, grade);
+
+                if (success) {
+                    response.sendRedirect("TeacherServlet?subjectId=" + subjectId + "&success=true");
+                } else {
+                    response.sendRedirect("TeacherServlet?subjectId=" + subjectId + "&error=true");
+                }
             } else {
-                response.sendRedirect("TeacherServlet?subjectId=" + subjectId + "&error=true");
+                response.sendRedirect("teacherPage.jsp?error=Invalid input");
+            }
+        } else if ("updateGrade".equals(action)) {
+            // Logic for updating a grade
+            String gradeIdParam = request.getParameter("gradeId");
+            String subjectIdParam = request.getParameter("subjectId");
+            String updatedGradeParam = request.getParameter("updatedGrade");
+            String updatedDateParam = request.getParameter("updatedDate");
+
+            if (gradeIdParam != null && updatedGradeParam != null && updatedDateParam != null) {
+                int gradeId = Integer.parseInt(gradeIdParam);
+                int subjectId = Integer.parseInt(subjectIdParam);
+                double updatedGrade = Double.parseDouble(updatedGradeParam);
+                Date updatedDate = Date.valueOf(updatedDateParam);
+
+                boolean success = gradeService.updateGradeForStudent(gradeId, updatedGrade, updatedDate);
+
+                if (success) {
+                    response.sendRedirect("TeacherServlet?subjectId=" + subjectId + "&success=true");
+                } else {
+                    response.sendRedirect("TeacherServlet?subjectId=" + subjectId + "&error=true");
+                }
+            } else {
+                response.sendRedirect("teacherPage.jsp?error=Invalid input");
             }
         } else {
-            response.sendRedirect("teacherPage.jsp?error=Invalid input");
+            response.sendRedirect("teacherPage.jsp?error=Unknown action");
         }
     }
+
 }

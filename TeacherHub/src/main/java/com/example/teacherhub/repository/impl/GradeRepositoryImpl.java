@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 public class GradeRepositoryImpl implements GradeRepository {
@@ -58,6 +59,27 @@ public class GradeRepositoryImpl implements GradeRepository {
             e.printStackTrace();
         }
 
-        return false; // Return false if an exception occurs
+        return false;
+    }
+
+    @Override
+    public boolean updateGradeForStudent(int gradeId, double grade, Date dateAssigned) {
+        String sql = "{CALL UpdateGradeForStudent(?, ?, ?)}";
+
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
+
+            preparedStatement.setInt(1, gradeId);
+            preparedStatement.setDouble(2, grade);
+            preparedStatement.setDate(3, dateAssigned);
+
+            int rowsAffected = preparedStatement.executeUpdate(); // Execute and check affected rows
+            return rowsAffected > 0; // If rows affected > 0, operation succeeded
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
