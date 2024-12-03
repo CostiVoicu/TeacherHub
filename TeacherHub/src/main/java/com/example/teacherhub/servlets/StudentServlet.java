@@ -35,13 +35,19 @@ public class StudentServlet extends HttpServlet {
         User student = (User) request.getSession().getAttribute("user");
 
         if (student != null) {
-            // Retrieve the student's subjects (example)
+            String subjectIdParam = request.getParameter("subjectId");
             List<Subject> subjects = subjectService.getSubjectsByStudentId(student.getUserID());
-
-            // Set the subjects as an attribute to be accessed in the JSP
             request.setAttribute("subjects", subjects);
 
-            // Forward to the student page
+            if (subjectIdParam != null) {
+                // If a subject is selected, fetch the grades for that subject
+                int subjectId = Integer.parseInt(subjectIdParam);
+                List<Grade> grades = subjectService.getGradesForSubject(student.getUserID(), subjectId);
+                request.setAttribute("grades", grades);
+                request.setAttribute("selectedSubject", subjectId);  // To highlight the selected subject
+            }
+
+            // Forward to the student page, with either subjects or grades displayed
             request.getRequestDispatcher("studentPage.jsp").forward(request, response);
         } else {
             response.sendRedirect("login.jsp"); // If no user is logged in, redirect to login page

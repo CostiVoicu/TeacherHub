@@ -1,4 +1,5 @@
 <%@ page import="com.example.teacherhub.model.Subject" %>
+<%@ page import="com.example.teacherhub.model.Grade" %>
 <%@ page import="java.util.List" %>
 <html>
 <head>
@@ -15,13 +16,46 @@
     if (subjects != null) {
       for (Subject subject : subjects) {
   %>
-  <li><%= subject.getSubjectName() %></li>
+  <li>
+    <a href="StudentServlet?subjectId=<%= subject.getSubjectID() %>">
+      <%= subject.getSubjectName() %>
+    </a>
+  </li>
   <%
       }
     }
   %>
 </ul>
 
-<%-- Optionally, for Grades, use a similar approach --%>
+<%-- If grades are available, display them below the subjects --%>
+<%
+  List<Grade> grades = (List<Grade>) request.getAttribute("grades");
+  if (grades != null && !grades.isEmpty()) {
+    int selectedSubjectId = (Integer) request.getAttribute("selectedSubject");
+    Subject selectedSubject = null;
+
+    // Find the selected subject for display
+    for (Subject subject : subjects) {
+      if (subject.getSubjectID() == selectedSubjectId) {
+        selectedSubject = subject;
+        break;
+      }
+    }
+%>
+
+<h3>Grades for <%= selectedSubject.getSubjectName() %>:</h3>
+<ul>
+  <%-- Loop through the grades and display them --%>
+  <%
+    for (Grade grade : grades) {
+  %>
+  <li><%= grade.getGrade() %> - <%= grade.getDateAssigned() %></li>
+  <%
+    }
+  %>
+</ul>
+
+<% } %>
+
 </body>
 </html>
