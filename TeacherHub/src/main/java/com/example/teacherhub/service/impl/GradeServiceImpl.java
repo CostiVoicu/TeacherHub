@@ -35,4 +35,9 @@ public class GradeServiceImpl implements GradeService {
 
         return gradeRepository.updateGradeForStudent(gradeId, grade, dateAssigned);
     }
+
+    @Override
+    public boolean deleteGradeForStudent(int gradeId) {
+        return gradeRepository.deleteGradeForStudent(gradeId);
+    }
 }

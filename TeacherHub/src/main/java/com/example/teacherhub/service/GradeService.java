@@ -9,4 +9,5 @@ public interface GradeService {
     List<Grade> getGradesForSubjectAllStudents(int subjectId);
     boolean addGradeForStudent(int studentId, int subjectId, double grade);
     boolean updateGradeForStudent(int gradeId, double grade, Date dateAssigned);
+    boolean deleteGradeForStudent(int gradeId);
 }

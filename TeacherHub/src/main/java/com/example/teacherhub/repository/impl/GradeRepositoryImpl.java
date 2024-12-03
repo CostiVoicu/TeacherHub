@@ -82,4 +82,23 @@ public class GradeRepositoryImpl implements GradeRepository {
 
         return false;
     }
+
+    @Override
+    public boolean deleteGradeForStudent(int gradeId) {
+        String sql = "{CALL DeleteGradeForStudent(?)}";
+
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
+
+            preparedStatement.setInt(1, gradeId);
+
+            int rowsAffected = preparedStatement.executeUpdate(); // Execute and check affected rows
+            return rowsAffected > 0; // If rows affected > 0, operation succeeded
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

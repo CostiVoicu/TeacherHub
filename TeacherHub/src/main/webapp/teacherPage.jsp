@@ -115,6 +115,14 @@
         <!-- Button to toggle update form -->
         <button type="button" onclick="toggleUpdateForm('<%= grade.getGradeID() %>')">Update</button>
 
+        <!-- Delete Grade Form -->
+        <form action="TeacherServlet" method="post" style="display:inline;">
+            <input type="hidden" name="action" value="deleteGrade">
+            <input type="hidden" name="gradeId" value="<%= grade.getGradeID() %>">
+            <input type="hidden" name="subjectId" value="<%= selectedSubject.getSubjectID() %>">
+            <button type="submit" onclick="return confirm('Are you sure you want to delete this grade?');">Delete</button>
+        </form>
+
         <!-- Hidden update form -->
         <form id="updateForm-<%= grade.getGradeID() %>" action="TeacherServlet" method="post" style="display:none; margin-top: 10px;">
             <input type="hidden" name="action" value="updateGrade">

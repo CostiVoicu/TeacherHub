@@ -119,6 +119,24 @@ public class TeacherServlet extends HttpServlet {
             } else {
                 response.sendRedirect("teacherPage.jsp?error=Invalid input");
             }
+        } else if ("deleteGrade".equals(action)) {
+            String gradeIdParam = request.getParameter("gradeId");
+            String subjectIdParam = request.getParameter("subjectId");
+
+            if (gradeIdParam != null) {
+                int gradeId = Integer.parseInt(gradeIdParam);
+                int subjectId = Integer.parseInt(subjectIdParam);
+
+                boolean success = gradeService.deleteGradeForStudent(gradeId);
+
+                if (success) {
+                    response.sendRedirect("TeacherServlet?subjectId=" + subjectId + "&success=true");
+                } else {
+                    response.sendRedirect("TeacherServlet?subjectId=" + subjectId + "&error=true");
+                }
+            } else {
+                response.sendRedirect("teacherPage.jsp?error=Invalid input");
+            }
         } else {
             response.sendRedirect("teacherPage.jsp?error=Unknown action");
         }
