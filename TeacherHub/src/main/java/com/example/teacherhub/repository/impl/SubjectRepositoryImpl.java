@@ -90,5 +90,28 @@ public class SubjectRepositoryImpl implements SubjectRepository {
         return grades;
     }
 
+    @Override
+    public List<User> getStudentsForSubject(int subjectId) {
+        List<User> students = new ArrayList<>();
+        String sql = "{CALL GetStudentsForSubject(?)}"; // Stored procedure call syntax
 
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
+
+            preparedStatement.setInt(1, subjectId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    User student = new User();
+                    student.setUserID(resultSet.getInt("StudentID"));
+                    student.setFirstName(resultSet.getString("FirstName"));
+                    student.setLastName(resultSet.getString("LastName"));
+                    students.add(student);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return students;
+    }
 }

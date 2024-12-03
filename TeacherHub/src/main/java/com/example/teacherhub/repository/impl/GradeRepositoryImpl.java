@@ -39,4 +39,25 @@ public class GradeRepositoryImpl implements GradeRepository {
 
         return grades;
     }
+
+    @Override
+    public boolean addGradeForStudent(int studentId, int subjectId, double grade) {
+        String sql = "{CALL AddGradeForStudent(?, ?, ?)}";
+
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
+
+            preparedStatement.setInt(1, studentId);
+            preparedStatement.setInt(2, subjectId);
+            preparedStatement.setDouble(3, grade);
+
+            int rowsAffected = preparedStatement.executeUpdate(); // Execute and check affected rows
+            return rowsAffected > 0; // If rows affected > 0, operation succeeded
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false; // Return false if an exception occurs
+    }
 }

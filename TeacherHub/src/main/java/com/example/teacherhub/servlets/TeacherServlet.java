@@ -41,21 +41,55 @@ public class TeacherServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User teacher = (User) request.getSession().getAttribute("user");
 
-        if (teacher != null){
+        if (teacher != null) {
             String subjectIdParam = request.getParameter("subjectId");
             List<Subject> subjectList = subjectService.getAllSubjects();
             request.setAttribute("subjects", subjectList);
 
-            if (subjectIdParam != null){
+            if (subjectIdParam != null) {
                 int subjectId = Integer.parseInt(subjectIdParam);
                 List<Grade> grades = gradeService.getGradesForSubjectAllStudents(subjectId);
                 request.setAttribute("grades", grades);
                 request.setAttribute("selectedSubject", subjectId);
+
+                // Fetch the selected subject to verify the teacher's assignment
+                Subject selectedSubject = subjectList.stream()
+                        .filter(subject -> subject.getSubjectID() == subjectId)
+                        .findFirst()
+                        .orElse(null);
+
+                if (selectedSubject != null && selectedSubject.getTeacherID() == teacher.getUserID()) {
+                    List<User> students = subjectService.getStudentsForSubject(subjectId);
+                    request.setAttribute("students", students); // Add students to the request
+                }
             }
 
             request.getRequestDispatcher("teacherPage.jsp").forward(request, response);
         } else {
             response.sendRedirect("loginPage.jsp"); // If no user is logged in, redirect to login page
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String subjectIdParam = request.getParameter("subjectId");
+        String studentIdParam = request.getParameter("studentId");
+        String gradeParam = request.getParameter("grade");
+
+        if (subjectIdParam != null && studentIdParam != null && gradeParam != null) {
+            int subjectId = Integer.parseInt(subjectIdParam);
+            int studentId = Integer.parseInt(studentIdParam);
+            double grade = Double.parseDouble(gradeParam);
+
+            boolean success = gradeService.addGradeForStudent(studentId, subjectId, grade);
+
+            if (success) {
+                response.sendRedirect("TeacherServlet?subjectId=" + subjectId + "&success=true");
+            } else {
+                response.sendRedirect("TeacherServlet?subjectId=" + subjectId + "&error=true");
+            }
+        } else {
+            response.sendRedirect("teacherPage.jsp?error=Invalid input");
         }
     }
 }
