@@ -63,4 +63,13 @@ public class GradeServiceImpl implements GradeService {
         Collections.sort(grades, new Grade.StudentNameComparator());
         return grades;
     }
+
+    @Override
+    public double calculateAverage(int subjectId) {
+        List<Grade> grades = gradeRepository.getGradesForSubjectAllStudents(subjectId);
+        return grades.stream()
+                .mapToDouble(Grade::getGrade) // Convert Grade to double
+                .average() // Calculate the average
+                .orElse(0.0); // Return 0.0 if there are no valid grades
+    }
 }

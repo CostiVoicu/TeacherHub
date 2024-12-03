@@ -13,4 +13,5 @@ public interface GradeService {
     List<Grade> getGradesSortedByDate(int subjectId);
     List<Grade> getGradesSortedByGrade(int subjectId);
     List<Grade> getGradesSortedByName(int subjectId);
+    double calculateAverage(int subjectId);
 }

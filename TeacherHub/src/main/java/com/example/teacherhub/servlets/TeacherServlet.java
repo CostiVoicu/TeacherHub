@@ -81,6 +81,11 @@ public class TeacherServlet extends HttpServlet {
                     Collections.sort(students, User.getAlphabeticalComparator());
                     request.setAttribute("students", students); // Add students to the request
                 }
+
+                double average = gradeService.calculateAverage(subjectId);
+                String formattedAverage = String.format("%.2f", average);
+                request.setAttribute("averageGrade", formattedAverage);
+
             }
 
             request.getRequestDispatcher("teacherPage.jsp").forward(request, response);

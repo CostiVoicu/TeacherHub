@@ -103,6 +103,10 @@
 
         if (selectedSubject != null) {
 %>
+<% if (selectedSubject != null && selectedSubject.getTeacherID() == ((User) session.getAttribute("user")).getUserID()) { %>
+    <h3 id="averageText" style="display: none">Average Grade for <%= selectedSubject.getSubjectName() %>: ${averageGrade}</h3>
+    <button type="button" onclick="toggleAverage()">Show Average</button>
+<% } %>
 
 <h3>Grades for <%= selectedSubject.getSubjectName() %></h3>
 
@@ -163,15 +167,17 @@
 %>
 
 <script>
+    function toggleAverage(){
+        const averageText = document.getElementById("averageText")
+        averageText.style.display = averageText.style.display === "none" ? "block" : "none";
+    }
+
     // JavaScript function to toggle the visibility of the update form
     function toggleUpdateForm(gradeId) {
-        console.log("Attempting to toggle form for Grade ID:", gradeId);
-        const formId = "updateForm-" + gradeId; // Concatenates 'updateForm-' with the gradeId
-        console.log("Looking for form with ID:", formId);
+        const formId = "updateForm-" + gradeId;
 
         const form = document.getElementById(formId);
         if (form) {
-            // Toggles the visibility of the form
             form.style.display = form.style.display === "none" ? "block" : "none";
         } else {
             console.error("Form not found for Grade ID:", gradeId);
