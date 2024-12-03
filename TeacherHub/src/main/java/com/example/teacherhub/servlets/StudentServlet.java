@@ -50,7 +50,7 @@ public class StudentServlet extends HttpServlet {
             // Forward to the student page, with either subjects or grades displayed
             request.getRequestDispatcher("studentPage.jsp").forward(request, response);
         } else {
-            response.sendRedirect("login.jsp"); // If no user is logged in, redirect to login page
+            response.sendRedirect("loginPage.jsp"); // If no user is logged in, redirect to login page
         }
     }
 }

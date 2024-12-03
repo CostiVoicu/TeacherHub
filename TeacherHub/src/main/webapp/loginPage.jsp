@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2>Login</h2>
-<form action="${pageContext.request.contextPath}/LoginServlet" method="post">
+<form action="LoginServlet" method="post">
     <label for="email">Email:</label>
     <input type="text" id="email" name="email" required>
     <br><br>

@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
         for (User teacher : teachers) {
             if (teacher.getEmail().equals(email) && teacher.getPassword().equals(password)) {
                 request.getSession().setAttribute("user", teacher);
-                response.sendRedirect("teacherPage.jsp"); // Redirect to teacher page
+                response.sendRedirect("TeacherServlet"); // Redirect to teacher page
                 return;
             }
         }
@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
             }
         }
 
-        // If no match, redirect to login with error
-        response.sendRedirect("login.jsp?error=Invalid credentials");
+        // If no match, redirect to log in with error
+        response.sendRedirect("loginPage.jsp?error=Invalid credentials");
     }
 }
