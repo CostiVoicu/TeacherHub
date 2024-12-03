@@ -21,6 +21,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public List<Subject> getAllSubjects() {
+        return subjectRepository.getAllSubjects();
+    }
+
+    @Override
     public List<Grade> getGradesForSubject(int studentId, int subjectId) {
         return  subjectRepository.getGradesForSubject(studentId, subjectId);
     }

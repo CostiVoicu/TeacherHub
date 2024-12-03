@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface SubjectService {
     List<Subject> getSubjectsByStudentId(int studentId);
+    List<Subject> getAllSubjects();
     List<Grade> getGradesForSubject(int studentId, int subjectId);
 }

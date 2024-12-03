@@ -2,6 +2,7 @@ package com.example.teacherhub.repository.impl;
 
 import com.example.teacherhub.model.Grade;
 import com.example.teacherhub.model.Subject;
+import com.example.teacherhub.model.User;
 import com.example.teacherhub.repository.SubjectRepository;
 import com.example.teacherhub.utils.DBConnectionUtil;
 
@@ -33,6 +34,30 @@ public class SubjectRepositoryImpl implements SubjectRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return subjects;
+    }
+
+    @Override
+    public List<Subject> getAllSubjects() {
+        List<Subject> subjects = new ArrayList<>();
+
+        String sql = "{CALL GetAllSubjects}";
+
+        try (Connection connection = DBConnectionUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareCall(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Subject subject = new Subject();
+                subject.setSubjectID(resultSet.getInt("SubjectID"));
+                subject.setSubjectName(resultSet.getString("SubjectName"));
+                subject.setTeacherID(resultSet.getInt("TeacherID"));
+                subjects.add(subject);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return subjects;
     }
 
