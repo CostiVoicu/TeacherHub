@@ -7,6 +7,7 @@ import com.example.teacherhub.repository.SubjectRepository;
 import com.example.teacherhub.repository.impl.SubjectRepositoryImpl;
 import com.example.teacherhub.service.SubjectService;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class SubjectServiceImpl implements SubjectService {
@@ -34,5 +35,12 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public List<User> getStudentsForSubject(int subjectId) {
         return subjectRepository.getStudentsForSubject(subjectId);
+    }
+
+    @Override
+    public List<Subject> getSubjectsSortedAlphabetically() {
+        List<Subject> subjects = subjectRepository.getAllSubjects();
+        subjects.sort(Comparator.comparing(Subject::getSubjectName));
+        return subjects;
     }
 }

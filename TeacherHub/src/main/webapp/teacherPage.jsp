@@ -14,6 +14,11 @@
 </form>
 
 <h3>Subjects</h3>
+
+<form action="TeacherServlet" method="get">
+    <button type="submit" name="sortSubjects" value="name">Sort Alphabetically</button>
+</form>
+
 <ul>
     <%
         List<Subject> subjects = (List<Subject>) request.getAttribute("subjects");
@@ -62,7 +67,7 @@
                 for (User student : students) {
         %>
         <option value="<%= student.getUserID() %>">
-            <%= student.getFirstName() %> <%= student.getLastName() %>
+            <%= student.getLastName() %> <%= student.getFirstName() %>
         </option>
         <%
                 }
@@ -100,6 +105,14 @@
 %>
 
 <h3>Grades for <%= selectedSubject.getSubjectName() %></h3>
+
+<form action="TeacherServlet" method="get">
+    <input type="hidden" name="subjectId" value="${selectedSubject}">
+    <button type="submit" name="sortGrades" value="name">Sort By Name</button>
+    <button type="submit" name="sortGrades" value="number">Sort By Grade</button>
+    <button type="submit" name="sortGrades" value="date">Sort By Date</button>
+</form>
+
 <ul>
     <%-- Loop through the grades and display them --%>
     <%

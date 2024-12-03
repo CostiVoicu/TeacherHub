@@ -5,6 +5,8 @@ import com.example.teacherhub.repository.GradeRepository;
 import com.example.teacherhub.service.GradeService;
 
 import java.sql.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class GradeServiceImpl implements GradeService {
@@ -39,5 +41,26 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public boolean deleteGradeForStudent(int gradeId) {
         return gradeRepository.deleteGradeForStudent(gradeId);
+    }
+
+    @Override
+    public List<Grade> getGradesSortedByDate(int subjectId) {
+        List<Grade> grades = gradeRepository.getGradesForSubjectAllStudents(subjectId);
+        grades.sort(Comparator.comparing(Grade::getDateAssigned));
+        return grades;
+    }
+
+    @Override
+    public List<Grade> getGradesSortedByGrade(int subjectId) {
+        List<Grade> grades = gradeRepository.getGradesForSubjectAllStudents(subjectId);
+        grades.sort(Comparator.comparing(Grade::getGrade).reversed());
+        return grades;
+    }
+
+    @Override
+    public List<Grade> getGradesSortedByName(int subjectId) {
+        List<Grade> grades = gradeRepository.getGradesForSubjectAllStudents(subjectId);
+        Collections.sort(grades, new Grade.StudentNameComparator());
+        return grades;
     }
 }

@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.Collections;
 import java.util.List;
 
 @WebServlet("/TeacherServlet")
@@ -45,11 +46,27 @@ public class TeacherServlet extends HttpServlet {
         if (teacher != null) {
             String subjectIdParam = request.getParameter("subjectId");
             List<Subject> subjectList = subjectService.getAllSubjects();
+
+            // Sort subjects if requested
+            if ("name".equals(request.getParameter("sortSubjects"))) {
+                subjectList = subjectService.getSubjectsSortedAlphabetically();
+            }
+
             request.setAttribute("subjects", subjectList);
 
             if (subjectIdParam != null) {
                 int subjectId = Integer.parseInt(subjectIdParam);
                 List<Grade> grades = gradeService.getGradesForSubjectAllStudents(subjectId);
+
+                // Sort grades if requested
+                if ("name".equals(request.getParameter("sortGrades"))) {
+                    grades = gradeService.getGradesSortedByName(subjectId);
+                } else if ("number".equals(request.getParameter("sortGrades"))) {
+                    grades = gradeService.getGradesSortedByGrade(subjectId);
+                } else if ("date".equals(request.getParameter("sortGrades"))) {
+                    grades = gradeService.getGradesSortedByDate(subjectId);
+                }
+
                 request.setAttribute("grades", grades);
                 request.setAttribute("selectedSubject", subjectId);
 
@@ -61,6 +78,7 @@ public class TeacherServlet extends HttpServlet {
 
                 if (selectedSubject != null && selectedSubject.getTeacherID() == teacher.getUserID()) {
                     List<User> students = subjectService.getStudentsForSubject(subjectId);
+                    Collections.sort(students, User.getAlphabeticalComparator());
                     request.setAttribute("students", students); // Add students to the request
                 }
             }

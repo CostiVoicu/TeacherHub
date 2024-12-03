@@ -10,5 +10,4 @@ public interface GradeRepository {
     boolean addGradeForStudent(int studentId, int subjectId, double grade);
     boolean updateGradeForStudent(int gradeId, double grade, Date dateAssigned);
     boolean deleteGradeForStudent(int gradeId);
-
 }

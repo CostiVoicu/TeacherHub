@@ -5,6 +5,8 @@ import com.example.teacherhub.repository.UserRepository;
 import com.example.teacherhub.repository.impl.UserRepositoryImpl;
 import com.example.teacherhub.service.UserService;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -14,7 +16,6 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
     @Override
     public List<User> getAllTeachers() {
         // Add logging
@@ -34,6 +35,7 @@ public class UserServiceImpl implements UserService {
         // Add logging
         System.out.println("Fetching all students...");
         List<User> students = userRepository.getAllStudents();
+        Collections.sort(students, User.getAlphabeticalComparator());
 
         // Optional: Validation or transformation
         if (students.isEmpty()) {

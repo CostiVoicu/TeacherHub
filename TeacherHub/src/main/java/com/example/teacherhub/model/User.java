@@ -1,5 +1,7 @@
 package com.example.teacherhub.model;
 
+import java.util.Comparator;
+
 public class User {
     private int userID;
     private String firstName;
@@ -7,6 +9,12 @@ public class User {
     private String userType;
     private String email;
     private String password;
+
+    public static Comparator<User> getAlphabeticalComparator() {
+        return Comparator
+                .comparing(User::getLastName)
+                .thenComparing(User::getFirstName);
+    }
 
     public String getEmail() {
         return email;

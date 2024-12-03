@@ -11,4 +11,5 @@ public interface SubjectService {
     List<Subject> getAllSubjects();
     List<Grade> getGradesForSubject(int studentId, int subjectId);
     List<User> getStudentsForSubject(int subjectId);
+    List<Subject> getSubjectsSortedAlphabetically();
 }
