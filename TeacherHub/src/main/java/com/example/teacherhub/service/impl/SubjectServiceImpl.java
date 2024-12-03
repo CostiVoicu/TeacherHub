@@ -1,5 +1,6 @@
 package com.example.teacherhub.service.impl;
 
+import com.example.teacherhub.model.Grade;
 import com.example.teacherhub.model.Subject;
 import com.example.teacherhub.repository.SubjectRepository;
 import com.example.teacherhub.repository.impl.SubjectRepositoryImpl;
@@ -17,5 +18,10 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public List<Subject> getSubjectsByStudentId(int studentId) {
         return subjectRepository.getSubjectsByStudentId(studentId);
+    }
+
+    @Override
+    public List<Grade> getGradesForSubject(int studentId, int subjectId) {
+        return  subjectRepository.getGradesForSubject(studentId, subjectId);
     }
 }
